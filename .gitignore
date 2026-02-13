@@ -1,0 +1,109 @@
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/crash_hotspot.xml
+hs_err_pid*
+
+# Exceptions to the rule
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# STS (Spring Tool Suite) specific
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# Intellij Idea
+.idea
+*.iws
+*.iml
+*.ipr
+*.properties
+*.xml
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# VS Code
+.vscode
+
+# Gradle
+.gradle
+build/
+
+# Maven
+target/
+!src/main/**/target/
+!src/test/**/target/
+
+# JBoss
+.jboss/
+
+# Tomcat
+logs/
+work/
+
+# Spring Boot
+*.out
+
+# Native build output
+native/
+native-image/
+
+# Environment variable files
+.env
+.env.local
+.env.*
+
+# IDE
+.DS_Store
+Thumbs.db
+
+# Testing
+*.dump
+
+# Documentation
+*.pdf
+*.doc
+*.docx
+
+# Temporary files
+*.tmp
+*.bak
+*~
+.#*
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Icon?
+Network Trash Folder
+Temporary Items
+VolumeIcon.icns
