@@ -1,6 +1,6 @@
-# Clean Architecture Project with Spring Boot
+# SaaS Spring Application
 
-This project follows Clean Architecture principles to ensure separation of concerns, maintainability, and testability. The architecture is organized into distinct layers, each with specific responsibilities.
+This project is a Spring Boot application with functionality similar to Moodle and Duolingo. The architecture follows clean architecture principles with a focus on modularity and maintainability.
 
 ## Folder Structure
 
@@ -10,140 +10,59 @@ src/
 │   ├── java/
 │   │   └── com/
 │   │       └── saas/
-│   │           └── cleanarchitecture/
-│   │               ├── application/          # Application layer (use cases)
-│   │               │   ├── config/           # Configuration classes
-│   │               │   ├── service/          # Application services
-│   │               │   ├── controller/       # REST controllers
-│   │               │   ├── model/            # DTOs (Data Transfer Objects)
-│   │               │   ├── exception/        # Application exceptions
-│   │               │   └── util/             # Utility classes
-│   │               ├── domain/              # Domain layer (business logic)
-│   │               │   ├── model/           # Entity classes
-│   │               │   ├── repository/      # Repository interfaces
-│   │               │   ├── service/         # Domain services
-│   │               │   ├── exception/       # Domain exceptions
-│   │               │   └── util/            # Domain utilities
-│   │               ├── infrastructure/      # Infrastructure layer (external concerns)
-│   │               │   ├── config/          # Infrastructure configurations
-│   │               │   ├── repository/      # Repository implementations
-│   │               │   ├── controller/      # Infrastructure controllers
-│   │               │   ├── model/           # Infrastructure models
-│   │               │   ├── exception/       # Infrastructure exceptions
-│   │               │   └── util/            # Infrastructure utilities
-│   │               └── presentation/        # Presentation layer (UI concerns)
-│   │                   ├── config/          # Presentation configurations
-│   │                   ├── controller/      # Presentation controllers
-│   │                   ├── model/           # Presentation models
-│   │                   ├── exception/       # Presentation exceptions
-│   │                   └── util/            # Presentation utilities
+│   │           └── spring/
+│   │               ├── achievement/        # Achievement module
+│   │               │   ├── dto/            # Data Transfer Objects
+│   │               │   ├── Achievement.java # Entity class
+│   │               │   ├── AchievementController.java
+│   │               │   ├── AchievementRepository.java
+│   │               │   └── AchievementService.java
+│   │               └── Application.java    # Main application class
 │   └── resources/
-│       ├── application/                     # Application layer resources
-│       ├── domain/                          # Domain layer resources
-│       ├── infrastructure/                  # Infrastructure layer resources
-│       └── presentation/                    # Presentation layer resources
+│       └── application.properties          # Application configuration
 └── test/
     └── java/
         └── com/
             └── saas/
-                └── cleanarchitecture/
-                    ├── application/         # Application layer tests
-                    ├── domain/              # Domain layer tests
-                    ├── infrastructure/      # Infrastructure layer tests
-                    └── presentation/        # Presentation layer tests
+                └── spring/
+                    └── achievement/
+                        └── AchievementControllerTest.java # Module tests
 ```
 
-## Layer Descriptions
+## Important Maven Wrapper (mvnw) Commands
 
-### Domain Layer
-The domain layer contains the business logic and entities. This is the core of the application and should be independent of any external frameworks or libraries. It includes:
+The project uses the Maven Wrapper (mvnw) for consistent builds across different environments. Here are the most important commands:
 
-- **Entities**: Business objects that represent the core concepts of the application
-- **Repositories**: Interfaces defining data access contracts (not implementations)
-- **Domain Services**: Business logic that doesn't fit naturally in an entity
-- **Exceptions**: Domain-specific exceptions
+### Install Dependencies
+```bash
+./mvnw install
+```
+Downloads and installs all project dependencies based on the pom.xml configuration.
 
-### Application Layer
-The application layer orchestrates the use cases of the application. It depends on the domain layer but not on the infrastructure layer. It includes:
+### Clean Project
+```bash
+./mvnw clean
+```
+Removes the target directory and all generated files, cleaning up the project workspace.
 
-- **Use Cases**: Application-specific business rules
-- **Application Services**: Services that coordinate between domain and infrastructure
-- **Controllers**: REST endpoints that expose application functionality
-- **DTOs**: Data Transfer Objects for communication between layers
+### Run Tests
+```bash
+./mvnw test
+```
+Executes all unit and integration tests in the project.
 
-### Infrastructure Layer
-The infrastructure layer implements the interfaces defined in the domain layer and handles external concerns. It includes:
+### Run Application
+```bash
+./mvnw spring-boot:run
+```
+Starts the Spring Boot application locally for development purposes.
 
-- **Repository Implementations**: Concrete implementations of repository interfaces
-- **External Service Integrations**: Third-party API integrations
-- **Database Configurations**: JPA/Hibernate configurations
-- **Message Queue Implementations**: Event handling and messaging
+### Package Application
+```bash
+./mvnw package
+```
+Compiles the code, runs tests, and packages the application into a JAR file in the target directory.
 
-### Presentation Layer
-The presentation layer handles user interface concerns and HTTP request/response processing. It includes:
-
-- **Controllers**: Handle HTTP requests and responses
-- **View Models**: Objects specifically designed for UI representation
-- **Validation Logic**: Input validation and sanitization
-
-## Typical File Locations
-
-### Controllers
-Controllers are typically located in the `presentation` or `application` layer depending on whether they handle pure presentation logic or application orchestration.
-
-### Services
-- **Domain Services**: Located in the `domain/service` package
-- **Application Services**: Located in the `application/service` package
-- **Infrastructure Services**: Located in the `infrastructure/service` package
-
-### Repositories
-- **Interfaces**: Located in the `domain/repository` package
-- **Implementations**: Located in the `infrastructure/repository` package
-
-### Models/Entities
-- **Domain Entities**: Located in the `domain/model` package
-- **DTOs**: Located in the `application/model` package
-- **Infrastructure Models**: Located in the `infrastructure/model` package
-
-## Testing Strategy
-
-Testing is organized by layer to ensure proper isolation and coverage:
-
-### Domain Layer Tests
-Located in `src/test/java/com/saas/cleanarchitecture/domain/`
-- Unit tests for business logic
-- Entity validation tests
-- Domain service tests
-- Repository interface contract tests
-
-### Application Layer Tests
-Located in `src/test/java/com/saas/cleanarchitecture/application/`
-- Integration tests for use cases
-- Controller tests (without infrastructure dependencies)
-- Service orchestration tests
-- DTO mapping tests
-
-### Infrastructure Layer Tests
-Located in `src/test/java/com/saas/cleanarchitecture/infrastructure/`
-- Repository implementation tests (with database)
-- External service integration tests
-- Configuration tests
-- Database migration tests
-
-### Presentation Layer Tests
-Located in `src/test/java/com/saas/cleanarchitecture/presentation/`
-- Controller integration tests
-- API endpoint tests
-- Request/response validation tests
-- Security tests
-
-## Benefits of Clean Architecture
-
-1. **Independence of Frameworks**: The business logic is not dependent on external frameworks
-2. **Testability**: Business logic can be tested without external dependencies
-3. **Independence of UI**: The UI can change without affecting business logic
-4. **Independence of Database**: The database can change without affecting business logic
-5. **Independence of External Agencies**: Business rules are not affected by external agencies
 
 ## Project Idea: Learning Platform
 
