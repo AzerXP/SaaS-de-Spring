@@ -1,4 +1,4 @@
 package com.saas.spring.achievement.dto;
 
-public record AchievementOutDto() {
+public record AchievementOutDto(Long id, String name) {
 }
