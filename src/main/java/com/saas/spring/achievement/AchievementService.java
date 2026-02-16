@@ -57,7 +57,7 @@ public class AchievementService {
                 dto.name() != null ? dto.name() : achievement.getName()
         );
 
-        return this.convertToOutDto(achievement);
+        return this.convertToOutDto(this.achievementRepository.save(achievement));
     }
 
     public void deleteAchievement(Long id) {
