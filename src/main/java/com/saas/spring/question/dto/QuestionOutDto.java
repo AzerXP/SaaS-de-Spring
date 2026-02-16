@@ -1,4 +1,8 @@
 package com.saas.spring.question.dto;
 
-public class questionOutDto {
+public record QuestionOutDto(
+        Long id,
+        String text
+) {
 }
+

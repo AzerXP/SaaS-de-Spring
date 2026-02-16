@@ -1,4 +1,9 @@
 package com.saas.spring.question.dto;
 
-public class questionUpdateDto {
+import jakarta.annotation.Nullable;
+
+public record QuestionUpdateDto(
+        @Nullable
+        String text
+) {
 }
