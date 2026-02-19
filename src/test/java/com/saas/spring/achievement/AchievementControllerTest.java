@@ -42,7 +42,6 @@ public class AchievementControllerTest {
         );
         when(achievementService.getAllAchievement()).thenReturn(mockList);
 
-
         mockMvc.perform(get("/achievements"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))

@@ -6,10 +6,7 @@ import com.saas.spring.question.dto.QuestionUpdateDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,6 +21,7 @@ public class QuestionController {
         this.questionService = questionService;
     }
 
+    @GetMapping
     public ResponseEntity<List<QuestionOutDto>> getQuestions(){
         log.info("Obteniendo todas las preguntas");
         var questions = this.questionService.getAllQuestions();
@@ -31,6 +29,7 @@ public class QuestionController {
         return ResponseEntity.ok(questions);
     }
 
+    @GetMapping("/{id}")
     public ResponseEntity<QuestionOutDto> getGestion(
             @PathVariable Long id
     ){
@@ -39,6 +38,7 @@ public class QuestionController {
         return ResponseEntity.ok(question);
     }
 
+    @PostMapping
     public ResponseEntity<QuestionOutDto> createQuestion(
             @RequestBody QuestionInDto dto
     ){
@@ -47,6 +47,7 @@ public class QuestionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
+    @PatchMapping("/{id}")
     public ResponseEntity<QuestionOutDto> updateQuestion(
             @PathVariable Long id,
             @RequestBody QuestionUpdateDto dto
@@ -56,6 +57,7 @@ public class QuestionController {
         return ResponseEntity.ok(updated);
     }
 
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteQuestion(
             @PathVariable Long id
     ){
