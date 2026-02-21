@@ -1,9 +1,5 @@
 package com.saas.spring.question;
 
-import com.saas.spring.achievement.dto.AchievementOutDto;
-import com.saas.spring.question.Question;
-import com.saas.spring.question.QuestionController;
-import com.saas.spring.question.QuestionService;
 import com.saas.spring.question.dto.QuestionOutDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

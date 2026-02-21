@@ -30,7 +30,7 @@ public class QuestionController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<QuestionOutDto> getGestion(
+    public ResponseEntity<QuestionOutDto> getQuestion(
             @PathVariable Long id
     ){
         log.info("Obteniendo pregunta con id: {}", id);

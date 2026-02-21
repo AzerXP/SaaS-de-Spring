@@ -1,6 +1,5 @@
 package com.saas.spring.question;
 
-import com.saas.spring.achievement.dto.AchievementOutDto;
 import com.saas.spring.question.dto.QuestionInDto;
 import com.saas.spring.question.dto.QuestionOutDto;
 import com.saas.spring.question.dto.QuestionUpdateDto;
