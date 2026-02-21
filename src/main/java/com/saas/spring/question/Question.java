@@ -1,5 +1,7 @@
 package com.saas.spring.question;
 
+import com.saas.spring.questionType.QuestionType;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,4 +21,8 @@ public class Question {
     private Long id;
 
     private String text;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "question_type_id")
+    private QuestionType questionType;
 }
