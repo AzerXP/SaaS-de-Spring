@@ -35,8 +35,8 @@ public class QuestionControllerTest {
     void shouldReturnAllQuestions() throws Exception {
         // Given
         List<QuestionOutDto> expectedMockedQuestions = Arrays.asList(
-                new QuestionOutDto(1L, "Pregunta 1"),
-                new QuestionOutDto(2L, "Pregunta 2")
+                new QuestionOutDto(1L, "Pregunta 1", 1L),
+                new QuestionOutDto(2L, "Pregunta 2", 1L)
         );
 
         // When
@@ -55,7 +55,7 @@ public class QuestionControllerTest {
     void shouldReturnAQuestion() throws Exception{
         // Given
         Long idToSearch = 1L;
-        QuestionOutDto expectedMockedQuestion = new QuestionOutDto(idToSearch, "Pregunta1");
+        QuestionOutDto expectedMockedQuestion = new QuestionOutDto(idToSearch, "Pregunta1", 1L);
 
         // When
         when(questionService.getById(idToSearch)).thenReturn(expectedMockedQuestion);
