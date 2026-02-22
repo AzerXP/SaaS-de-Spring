@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.saas.spring.exception.QuestionTypeExceptions;
 import com.saas.spring.questionType.dto.QuestionTypeInDto;
 import com.saas.spring.questionType.dto.QuestionTypeOutDto;
 import com.saas.spring.questionType.dto.QuestionTypeUpdateDto;
@@ -33,7 +34,7 @@ public class QuestionTypeService {
 
     public QuestionType findQuestionTypeById(Long id){
         return this.questionTypeRepository.findById(id)
-        .orElseThrow(() -> new IllegalArgumentException("Tipo de pregunta no encontrada"));
+        .orElseThrow(() -> new QuestionTypeExceptions.QuestionTypeNotFoundException(id));
     }
     
     public QuestionTypeOutDto getById(Long id){
