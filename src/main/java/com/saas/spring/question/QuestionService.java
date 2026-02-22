@@ -1,9 +1,13 @@
 package com.saas.spring.question;
 
+import com.saas.spring.exception.QuestionExceptions;
 import com.saas.spring.question.dto.QuestionInDto;
 import com.saas.spring.question.dto.QuestionOutDto;
 import com.saas.spring.question.dto.QuestionUpdateDto;
+import com.saas.spring.questionType.QuestionTypeRepository;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -11,23 +15,27 @@ import java.util.List;
 public class QuestionService {
 
     private final QuestionRepository questionRepository;
+    private final QuestionTypeRepository questionTypeRepository;
 
-    public QuestionService(QuestionRepository questionRepository){
+    public QuestionService(QuestionRepository questionRepository, QuestionTypeRepository questionTypeRepository){
         this.questionRepository = questionRepository;
+        this.questionTypeRepository = questionTypeRepository;
     }
 
     private QuestionOutDto convertToDto(Question question) {
         return new QuestionOutDto(
                 question.getId(),
-                question.getText()
+                question.getText(),
+                question.getQuestionType().getId()
         );
     }
 
     private Question findQuestionById(Long id) {
         return questionRepository.findById(id).
-                orElseThrow(() -> new IllegalArgumentException("Pregunta no encontrada con id: " + id));
+                orElseThrow(() -> new QuestionExceptions.QuestionNotFoundException(id));
     }
 
+    @Transactional(readOnly = true)
     public List<QuestionOutDto> getAllQuestions(){
         return this.questionRepository.findAll()
                 .stream()
@@ -35,31 +43,46 @@ public class QuestionService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public QuestionOutDto getById(Long id){
         var question = this.findQuestionById(id);
         return this.convertToDto(question);
     }
 
+    @Transactional
     public QuestionOutDto createQuestion(QuestionInDto dto){
-        var question = this.questionRepository.save(
+        var questionType = questionTypeRepository.findById(dto.questionTypeId())
+            .orElseThrow(() -> new QuestionExceptions.QuestionCreationException("No encontrado el tipo de pregunta"));
+
+        Question question = this.questionRepository.save(
                 Question.builder()
                     .text(dto.text())
+                    .questionType(questionType)
                         .build()
         );
 
         return this.convertToDto(question);
     }
 
+    @Transactional
     public QuestionOutDto updateQuestion(QuestionUpdateDto dto, Long id){
         var question = this.findQuestionById(id);
 
         question.setText(
-                dto.text() != null ? dto.text() : question.getText()
+            dto.text() != null ? dto.text() : question.getText()
         );
 
-        return this.convertToDto(this.questionRepository.save(question));
+        question.setQuestionType(
+            dto.questionTypeId() != null 
+                ? questionTypeRepository.findById(dto.questionTypeId())
+                    .orElseThrow(() -> new QuestionExceptions.QuestionUpdateException(id, "No encontrado el tipo de pregunta"))
+                : question.getQuestionType()
+        );
+
+        return this.convertToDto(question);
     }
 
+    @Transactional
     public void deleteQuestion(Long id){
         var question = this.findQuestionById(id);
 

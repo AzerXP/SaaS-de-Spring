@@ -3,6 +3,8 @@ package com.saas.spring.question;
 import com.saas.spring.question.dto.QuestionInDto;
 import com.saas.spring.question.dto.QuestionOutDto;
 import com.saas.spring.question.dto.QuestionUpdateDto;
+
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +42,7 @@ public class QuestionController {
 
     @PostMapping
     public ResponseEntity<QuestionOutDto> createQuestion(
-            @RequestBody QuestionInDto dto
+            @Valid @RequestBody QuestionInDto dto
     ){
         log.info("Creando pregunta: {}", dto.text());
         var created = questionService.createQuestion(dto);
@@ -50,7 +52,7 @@ public class QuestionController {
     @PatchMapping("/{id}")
     public ResponseEntity<QuestionOutDto> updateQuestion(
             @PathVariable Long id,
-            @RequestBody QuestionUpdateDto dto
+            @Valid @RequestBody QuestionUpdateDto dto
     ){
         log.info("Actualizando pregunta con id: {}", id);
         var updated = questionService.updateQuestion(dto, id);

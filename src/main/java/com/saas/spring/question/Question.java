@@ -23,6 +23,6 @@ public class Question {
     private String text;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "question_type_id")
+    @JoinColumn(name = "question_type_id", nullable = false)
     private QuestionType questionType;
 }

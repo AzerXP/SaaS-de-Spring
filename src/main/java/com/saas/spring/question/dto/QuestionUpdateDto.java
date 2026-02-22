@@ -4,6 +4,8 @@ import jakarta.annotation.Nullable;
 
 public record QuestionUpdateDto(
         @Nullable
-        String text
+        String text,
+        @Nullable
+        Long questionTypeId
 ) {
 }
