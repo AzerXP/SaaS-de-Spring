@@ -24,6 +24,16 @@ public class RoleService {
         return roleRepository.save(Role.builder().nombre(roleInDto.nombre()).build());
     }
 
+    public Role updatRole(Long id, RoleInDto roleInDto){
+        Role r = getRoleById(id);
+
+        if (roleInDto.nombre().isBlank()) {
+            throw new IllegalArgumentException("Error el nombre no puede ser nulo");
+        }
+
+        return roleRepository.save(r);
+    }
+
     public List<Role> getAllRoles(){
         return roleRepository.findAll();
     }

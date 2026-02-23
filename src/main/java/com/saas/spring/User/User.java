@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "users")
+@Table(name = "user")
 public class User {
 
     @Id
@@ -35,9 +35,7 @@ public class User {
     @NotBlank(message = "El password del usuario no puede ser nulo o vacio")
     private String password;
 
-    //Notica aqui vamos a ver si despues no vamos por lazy por q eager te carga la clase directamente osea 
-    // que sino la utilizas es espacio en memorio por gusto
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Role> role;
 
 
