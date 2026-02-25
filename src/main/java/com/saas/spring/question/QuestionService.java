@@ -35,7 +35,6 @@ public class QuestionService {
                 orElseThrow(() -> new QuestionExceptions.QuestionNotFoundException(id));
     }
 
-    @Transactional(readOnly = true)
     public List<QuestionOutDto> getAllQuestions(){
         return this.questionRepository.findAll()
                 .stream()
@@ -43,7 +42,6 @@ public class QuestionService {
                 .toList();
     }
 
-    @Transactional(readOnly = true)
     public QuestionOutDto getById(Long id){
         var question = this.findQuestionById(id);
         return this.convertToDto(question);
