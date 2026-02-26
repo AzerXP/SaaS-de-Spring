@@ -1,6 +1,7 @@
 package com.saas.spring.question;
 
 import com.saas.spring.User.User;
+import com.saas.spring.questionConfig.QuestionConfig;
 import com.saas.spring.questionType.QuestionType;
 
 import jakarta.persistence.*;
@@ -30,4 +31,11 @@ public class Question {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @OneToOne(
+        mappedBy = "question",
+        cascade = CascadeType.ALL,
+        fetch = FetchType.LAZY
+    )
+    private QuestionConfig questionConfig;
 }
