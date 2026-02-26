@@ -31,12 +31,12 @@ public class QuestionService {
     }
 
     private Question findQuestionById(Long id) {
-        return questionRepository.findById(id).
+        return questionRepository.findByIdWithQuestionType(id).
                 orElseThrow(() -> new QuestionExceptions.QuestionNotFoundException(id));
     }
 
     public List<QuestionOutDto> getAllQuestions(){
-        return this.questionRepository.findAll()
+        return this.questionRepository.findAllWithQuestionType()
                 .stream()
                 .map(this::convertToDto)
                 .toList();
