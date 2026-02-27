@@ -1,6 +1,7 @@
 package com.saas.spring.question;
 
 import com.saas.spring.exception.QuestionExceptions;
+import com.saas.spring.exception.QuestionTypeExceptions;
 import com.saas.spring.question.dto.QuestionInDto;
 import com.saas.spring.question.dto.QuestionOutDto;
 import com.saas.spring.question.dto.QuestionUpdateDto;
@@ -50,7 +51,7 @@ public class QuestionService {
     @Transactional
     public QuestionOutDto createQuestion(QuestionInDto dto){
         var questionType = questionTypeRepository.findById(dto.questionTypeId())
-            .orElseThrow(() -> new QuestionExceptions.QuestionCreationException("No encontrado el tipo de pregunta"));
+            .orElseThrow(() -> new QuestionTypeExceptions.QuestionTypeNotFoundException(dto.questionTypeId()));
 
         Question question = this.questionRepository.save(
                 Question.builder()
@@ -73,7 +74,7 @@ public class QuestionService {
         question.setQuestionType(
             dto.questionTypeId() != null 
                 ? questionTypeRepository.findById(dto.questionTypeId())
-                    .orElseThrow(() -> new QuestionExceptions.QuestionUpdateException(id, "No encontrado el tipo de pregunta"))
+                    .orElseThrow(() -> new QuestionTypeExceptions.QuestionTypeNotFoundException(id))
                 : question.getQuestionType()
         );
 
