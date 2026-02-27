@@ -87,6 +87,42 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    // ==================== EXCEPCIONES DE QUESTION CONFIG ====================
+    
+    @ExceptionHandler(QuestionConfigExceptions.QuestionConfigNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleQuestionConfigNotFound(
+            QuestionConfigExceptions.QuestionConfigNotFoundException ex,
+            HttpServletRequest request) {
+        
+        ErrorResponse error = new ErrorResponse(
+            ex.getMessage(),
+            "La configuracion de pregunta solicitado no existe en el sistema",
+            HttpStatus.NOT_FOUND.value(),
+            request.getRequestURI()
+        );
+        
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({
+        QuestionConfigExceptions.QuestionConfigCreationException.class,
+        QuestionConfigExceptions.QuestionConfigUpdateException.class,
+        QuestionConfigExceptions.QuestionConfigDeletionException.class
+    })
+    public ResponseEntity<ErrorResponse> handleQuestionConfigOperationException(
+            RuntimeException ex,
+            HttpServletRequest request) {
+        
+        ErrorResponse error = new ErrorResponse(
+            ex.getMessage(),
+            "Error en operación con configuracion de pregunta",
+            HttpStatus.INTERNAL_SERVER_ERROR.value(),
+            request.getRequestURI()
+        );
+        
+        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     // ==================== EXCEPCIONES DE VALIDACIÓN ====================
     
     @ExceptionHandler(MethodArgumentNotValidException.class)
