@@ -30,4 +30,14 @@ public class QuestionConfigExceptions {
             super("No se pudo eliminar la Configuracion de pregunta " + questionId + ": " + reason);
         }
     }
+
+    public static class InvalidConfigSchemaException extends RuntimeException {
+        public InvalidConfigSchemaException(String message) {
+            super("El config no cumple con el schema del QuestionType: " + message);
+        }
+
+        public InvalidConfigSchemaException(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
 }
