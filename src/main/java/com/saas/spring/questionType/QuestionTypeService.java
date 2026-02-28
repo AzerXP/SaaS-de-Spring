@@ -21,7 +21,8 @@ public class QuestionTypeService {
     private QuestionTypeOutDto convertToDto(QuestionType questionType){
         return new QuestionTypeOutDto(
             questionType.getId(),
-            questionType.getName()
+            questionType.getName(),
+            questionType.getConfig_schema()
         );
     }
 
@@ -46,6 +47,7 @@ public class QuestionTypeService {
         QuestionType questionType = this.questionTypeRepository.save(
             QuestionType.builder()
             .name(dto.name())
+            .config_schema(dto.config_schema())
             .build()
         );
 
