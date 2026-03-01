@@ -93,7 +93,7 @@ public class QuestionControllerTest {
     @Test
     void createQuestionShouldReturn201WhenValid() throws Exception {
 
-        QuestionInDto inDto = new QuestionInDto("Nueva pregunta", 1L);
+        QuestionInDto inDto = new QuestionInDto("Nueva pregunta", 1L, null);
         QuestionOutDto outDto = new QuestionOutDto(1L, "Nueva pregunta", 1L);
 
         when(questionService.createQuestion(inDto))
