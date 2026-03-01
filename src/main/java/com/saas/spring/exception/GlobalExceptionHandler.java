@@ -88,19 +88,19 @@ public class GlobalExceptionHandler {
     }
 
     // ==================== EXCEPCIONES DE QUESTION CONFIG ====================
-    
+
     @ExceptionHandler(QuestionConfigExceptions.QuestionConfigNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleQuestionConfigNotFound(
             QuestionConfigExceptions.QuestionConfigNotFoundException ex,
             HttpServletRequest request) {
-        
+
         ErrorResponse error = new ErrorResponse(
             ex.getMessage(),
             "La configuracion de pregunta solicitado no existe en el sistema",
             HttpStatus.NOT_FOUND.value(),
             request.getRequestURI()
         );
-        
+
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
@@ -131,6 +131,40 @@ public class GlobalExceptionHandler {
         ErrorResponse error = new ErrorResponse(
             ex.getMessage(),
             "La configuración enviada no cumple con el schema esperado",
+            HttpStatus.BAD_REQUEST.value(),
+            request.getRequestURI()
+        );
+
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    // ==================== EXCEPCIONES DE LESSON ====================
+
+    @ExceptionHandler(LessonExceptions.LessonNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleLessonNotFound(
+            LessonExceptions.LessonNotFoundException ex,
+            HttpServletRequest request) {
+
+        ErrorResponse error = new ErrorResponse(
+            ex.getMessage(),
+            "La lección solicitada no existe en el sistema",
+            HttpStatus.NOT_FOUND.value(),
+            request.getRequestURI()
+        );
+
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({
+        LessonExceptions.InvalidLessonDataException.class
+    })
+    public ResponseEntity<ErrorResponse> handleLessonDataException(
+            RuntimeException ex,
+            HttpServletRequest request) {
+
+        ErrorResponse error = new ErrorResponse(
+            ex.getMessage(),
+            "Datos inválidos para lección",
             HttpStatus.BAD_REQUEST.value(),
             request.getRequestURI()
         );
