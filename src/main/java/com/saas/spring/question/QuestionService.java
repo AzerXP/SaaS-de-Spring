@@ -2,6 +2,7 @@ package com.saas.spring.question;
 
 import com.saas.spring.exception.QuestionExceptions;
 import com.saas.spring.exception.QuestionTypeExceptions;
+import com.saas.spring.lesson.LessonRepository;
 import com.saas.spring.question.dto.QuestionInDto;
 import com.saas.spring.question.dto.QuestionOutDto;
 import com.saas.spring.question.dto.QuestionUpdateDto;
@@ -17,10 +18,12 @@ public class QuestionService {
 
     private final QuestionRepository questionRepository;
     private final QuestionTypeRepository questionTypeRepository;
+    private final LessonRepository lessonRepository;
 
-    public QuestionService(QuestionRepository questionRepository, QuestionTypeRepository questionTypeRepository){
+    public QuestionService(QuestionRepository questionRepository, QuestionTypeRepository questionTypeRepository, LessonRepository lessonRepository){
         this.questionRepository = questionRepository;
         this.questionTypeRepository = questionTypeRepository;
+        this.lessonRepository = lessonRepository;
     }
 
     private QuestionOutDto convertToDto(Question question) {
@@ -53,12 +56,17 @@ public class QuestionService {
         var questionType = questionTypeRepository.findById(dto.questionTypeId())
             .orElseThrow(() -> new QuestionTypeExceptions.QuestionTypeNotFoundException(dto.questionTypeId()));
 
-        Question question = this.questionRepository.save(
-                Question.builder()
-                    .text(dto.text())
-                    .questionType(questionType)
-                        .build()
-        );
+        Question.QuestionBuilder builder = Question.builder()
+                .text(dto.text())
+                .questionType(questionType);
+
+        if (dto.lessonId() != null) {
+            var lesson = lessonRepository.findById(dto.lessonId())
+                    .orElseThrow(() -> new IllegalArgumentException("Lección no encontrada con id: " + dto.lessonId()));
+            builder.lesson(lesson);
+        }
+
+        Question question = this.questionRepository.save(builder.build());
 
         return this.convertToDto(question);
     }
@@ -72,7 +80,7 @@ public class QuestionService {
         );
 
         question.setQuestionType(
-            dto.questionTypeId() != null 
+            dto.questionTypeId() != null
                 ? questionTypeRepository.findById(dto.questionTypeId())
                     .orElseThrow(() -> new QuestionTypeExceptions.QuestionTypeNotFoundException(id))
                 : question.getQuestionType()

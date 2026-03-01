@@ -1,6 +1,7 @@
 package com.saas.spring.question;
 
 import com.saas.spring.User.User;
+import com.saas.spring.lesson.Lesson;
 import com.saas.spring.questionConfig.QuestionConfig;
 import com.saas.spring.questionType.QuestionType;
 
@@ -31,6 +32,10 @@ public class Question {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = true)
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "lesson_id", nullable = true)
+    private Lesson lesson;
 
     @OneToOne(
         mappedBy = "question",

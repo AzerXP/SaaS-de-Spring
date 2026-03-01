@@ -1,5 +1,6 @@
 package com.saas.spring.question.dto;
 
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -10,6 +11,9 @@ public record QuestionInDto(
         String text,
 
         @NotNull(message = "Debe haber un tipo de pregunta asociado")
-        Long questionTypeId
+        Long questionTypeId,
+
+        @Nullable
+        Long lessonId
 ) {
 }
