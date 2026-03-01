@@ -17,11 +17,13 @@ import com.saas.spring.questionType.dto.QuestionTypeInDto;
 import com.saas.spring.questionType.dto.QuestionTypeOutDto;
 import com.saas.spring.questionType.dto.QuestionTypeUpdateDto;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/question_types")
 @Slf4j
+@Tag(name = "Tipo de preguntas")
 public class QuestionTypeController {
 
     private QuestionTypeService questionTypeService;

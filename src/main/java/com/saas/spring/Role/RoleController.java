@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.saas.spring.Role.dto.RoleInDto;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RestController
 @RequestMapping("/role")
 @Slf4j
+@Tag(name = "Roles")
 public class RoleController {
 
     private final RoleService roleService;

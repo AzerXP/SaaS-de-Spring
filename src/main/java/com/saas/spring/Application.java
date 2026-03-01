@@ -5,6 +5,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
+
+@OpenAPIDefinition(
+    info = @Info(
+        title = "Saas de aprendizaje federado",
+        version = "1.0 Beta",
+        description = "Api para gestionar y aprender, daryl come trava"
+    )
+)
 @SpringBootApplication
 @RestController
 public class Application {

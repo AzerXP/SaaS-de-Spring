@@ -17,12 +17,14 @@ import com.saas.spring.questionConfig.dto.QuestionConfigInDto;
 import com.saas.spring.questionConfig.dto.QuestionConfigOutDto;
 import com.saas.spring.questionConfig.dto.QuestionConfigUpdateDto;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/question_configs")
 @Slf4j
+@Tag(name = "Configuracion de pregunta")
 public class QuestionConfigController {
 
     private final QuestionConfigService questionConfigService;
