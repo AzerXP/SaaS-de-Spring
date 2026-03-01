@@ -11,9 +11,18 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/achievements")
 @Slf4j
+@Tag(name = "Achievements", description = "Gestión de logros del sistema")
 public class AchievementController {
 
     private final AchievementService achievementService;
@@ -23,6 +32,11 @@ public class AchievementController {
     }
 
     @GetMapping
+    @Operation(summary = "Get all achievements", description = "Obtiene todos los logros disponibles en el sistema")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Logros obtenidos exitosamente",
+            content = @Content(schema = @Schema(implementation = AchievementOutDto.class)))
+    })
     public ResponseEntity<List<AchievementOutDto>> getAchievements(){
         log.info("Obteniendo todos los logros");
         List<AchievementOutDto> achievements = this.achievementService.getAllAchievement();
@@ -31,6 +45,22 @@ public class AchievementController {
     }
 
     @PostMapping
+    @Operation(summary = "Create achievement", description = "Crea un nuevo logro en el sistema")
+    @ApiResponses({
+        @ApiResponse(responseCode = "201", description = "Logro creado exitosamente",
+            content = @Content(schema = @Schema(implementation = AchievementOutDto.class),
+                examples = {
+                    @ExampleObject(name = "Achievement Example", summary = "Ejemplo de logro creado",
+                        value = """
+                        {
+                          "id": 1,
+                          "name": "Primeros Pasos"
+                        }
+                        """)
+                }
+            )),
+        @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos")
+    })
     public ResponseEntity<AchievementOutDto> createAchievement(
             @RequestBody @Valid AchievementInDto dto
     ){
@@ -40,6 +70,12 @@ public class AchievementController {
     }
 
     @GetMapping(path = "/{id}")
+    @Operation(summary = "Get achievement by ID", description = "Obtiene un logro específico por su ID")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Logro encontrado",
+            content = @Content(schema = @Schema(implementation = AchievementOutDto.class))),
+        @ApiResponse(responseCode = "404", description = "Logro no encontrado")
+    })
     public ResponseEntity<AchievementOutDto> getAchievement(
             @PathVariable Long id
     ){
@@ -49,6 +85,13 @@ public class AchievementController {
     }
 
     @PatchMapping(path = "/{id}")
+    @Operation(summary = "Update achievement", description = "Actualiza parcialmente un logro existente")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Logro actualizado",
+            content = @Content(schema = @Schema(implementation = AchievementOutDto.class))),
+        @ApiResponse(responseCode = "404", description = "Logro no encontrado"),
+        @ApiResponse(responseCode = "400", description = "Datos de actualización inválidos")
+    })
     public ResponseEntity<AchievementOutDto> updateAchievement(
             @PathVariable Long id,
             @RequestBody @Valid AchievementUpdateDto dto
@@ -59,6 +102,11 @@ public class AchievementController {
     }
 
     @DeleteMapping(path = "/{id}")
+    @Operation(summary = "Delete achievement", description = "Elimina permanentemente un logro del sistema")
+    @ApiResponses({
+        @ApiResponse(responseCode = "204", description = "Logro eliminado exitosamente"),
+        @ApiResponse(responseCode = "404", description = "Logro no encontrado")
+    })
     public ResponseEntity<Void> deleteAchievement(
             @PathVariable Long id
     ){
