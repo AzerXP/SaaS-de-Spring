@@ -45,8 +45,8 @@ public class LessonControllerTest {
     void shouldReturnAllLessons() throws Exception {
         // Given
         List<LessonOutDto> expectedLessons = Arrays.asList(
-            new LessonOutDto(1L, "Introducción a Java", "Conceptos básicos de Java"),
-            new LessonOutDto(2L, "Estructuras de Datos", "Arrays, Listas y Mapas")
+            new LessonOutDto(1L, "Introducción a Java", "Conceptos básicos de Java", null),
+            new LessonOutDto(2L, "Estructuras de Datos", "Arrays, Listas y Mapas", null)
         );
 
         // When
@@ -68,7 +68,8 @@ public class LessonControllerTest {
         LessonOutDto expectedLesson = new LessonOutDto(
             id,
             "Introducción a Python",
-            "Fundamentos del lenguaje Python"
+            "Fundamentos del lenguaje Python", 
+            null
         );
 
         // When
@@ -102,13 +103,15 @@ public class LessonControllerTest {
         // Given
         LessonInDto inputDto = new LessonInDto(
             "Introducción a Spring Boot",
-            "Aprende los fundamentos de Spring Boot"
+            "Aprende los fundamentos de Spring Boot",
+            null
         );
 
         LessonOutDto outputDto = new LessonOutDto(
             1L,
             "Introducción a Spring Boot",
-            "Aprende los fundamentos de Spring Boot"
+            "Aprende los fundamentos de Spring Boot",
+            null
         );
 
         // When
@@ -130,7 +133,8 @@ public class LessonControllerTest {
         // Given
         LessonInDto inputDto = new LessonInDto(
             "",
-            "Descripción válida"
+            "Descripción válida",
+            null
         );
 
         // When & Then
@@ -148,7 +152,8 @@ public class LessonControllerTest {
         String longDescription = "x".repeat(501);
         LessonInDto inputDto = new LessonInDto(
             "Título válido",
-            longDescription
+            longDescription,
+            null
         );
 
         // When & Then
@@ -166,13 +171,15 @@ public class LessonControllerTest {
         Long id = 1L;
         LessonUpdateDto updateDto = new LessonUpdateDto(
             "Título Actualizado",
-            "Descripción actualizada"
+            "Descripción actualizada",
+            null
         );
 
         LessonOutDto updatedLesson = new LessonOutDto(
             id,
             "Título Actualizado",
-            "Descripción actualizada"
+            "Descripción actualizada",
+            null
         );
 
         // When
@@ -195,6 +202,7 @@ public class LessonControllerTest {
         Long id = 999L;
         LessonUpdateDto updateDto = new LessonUpdateDto(
             "Título Actualizado",
+            null,
             null
         );
 
