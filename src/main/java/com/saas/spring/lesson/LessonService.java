@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.saas.spring.course.Course;
+import com.saas.spring.course.CourseRepository;
 import com.saas.spring.lesson.dto.LessonInDto;
 import com.saas.spring.lesson.dto.LessonOutDto;
 import com.saas.spring.lesson.dto.LessonUpdateDto;
@@ -18,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 public class LessonService {
 
     private final LessonRepository lessonRepository;
+    private final CourseRepository courseRepository;
 
     @Transactional(readOnly = true)
     public List<LessonOutDto> getAllLessons() {
@@ -38,10 +41,17 @@ public class LessonService {
     @Transactional
     public LessonOutDto createLesson(LessonInDto dto) {
         log.debug("Creando lección: {}", dto.title());
-        Lesson lesson = Lesson.builder()
+        Lesson.LessonBuilder builder = Lesson.builder()
                 .title(dto.title())
-                .description(dto.description())
-                .build();
+                .description(dto.description());
+
+        if (dto.courseId() != null) {
+            Course course = courseRepository.findById(dto.courseId())
+                    .orElseThrow(() -> new IllegalArgumentException("Curso no encontrado con id: " + dto.courseId()));
+            builder.course(course);
+        }
+
+        Lesson lesson = builder.build();
         Lesson saved = lessonRepository.save(lesson);
         log.info("Lección creada con id: {}", saved.getId());
         return convertToOutDto(saved);
@@ -59,6 +69,15 @@ public class LessonService {
         if (dto.description() != null) {
             lesson.setDescription(dto.description());
         }
+        if (dto.courseId() != null) {
+            if (dto.courseId() == 0L) {
+                lesson.setCourse(null);
+            } else {
+                Course course = courseRepository.findById(dto.courseId())
+                        .orElseThrow(() -> new IllegalArgumentException("Curso no encontrado con id: " + dto.courseId()));
+                lesson.setCourse(course);
+            }
+        }
 
         Lesson updated = lessonRepository.save(lesson);
         log.info("Lección actualizada con id: {}", updated.getId());
@@ -75,10 +94,12 @@ public class LessonService {
     }
 
     private LessonOutDto convertToOutDto(Lesson lesson) {
+        Long courseId = lesson.getCourse() != null ? lesson.getCourse().getId() : null;
         return new LessonOutDto(
                 lesson.getId(),
                 lesson.getTitle(),
-                lesson.getDescription()
+                lesson.getDescription(),
+                courseId
         );
     }
 }

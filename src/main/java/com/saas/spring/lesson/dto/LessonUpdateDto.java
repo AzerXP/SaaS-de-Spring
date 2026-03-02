@@ -10,6 +10,9 @@ public record LessonUpdateDto(
 
         @Nullable
         @Size(max = 500, message = "La descripción no puede superar los 500 caracteres")
-        String description
+        String description,
+
+        @Nullable
+        Long courseId
 ) {
 }

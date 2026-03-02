@@ -15,20 +15,54 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    // ==================== EXCEPCIONES DE COURSE ====================
+
+    @ExceptionHandler(CourseExceptions.CourseNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleCourseNotFound(
+            CourseExceptions.CourseNotFoundException ex,
+            HttpServletRequest request) {
+
+        ErrorResponse error = new ErrorResponse(
+            ex.getMessage(),
+            "El curso solicitado no existe en el sistema",
+            HttpStatus.NOT_FOUND.value(),
+            request.getRequestURI()
+        );
+
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({
+        CourseExceptions.InvalidCourseDataException.class
+    })
+    public ResponseEntity<ErrorResponse> handleCourseDataException(
+            RuntimeException ex,
+            HttpServletRequest request) {
+
+        ErrorResponse error = new ErrorResponse(
+            ex.getMessage(),
+            "Datos inválidos para curso",
+            HttpStatus.BAD_REQUEST.value(),
+            request.getRequestURI()
+        );
+
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
     // ==================== EXCEPCIONES DE QUESTION ====================
-    
+
     @ExceptionHandler(QuestionExceptions.QuestionNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleQuestionNotFound(
             QuestionExceptions.QuestionNotFoundException ex,
             HttpServletRequest request) {
-        
+
         ErrorResponse error = new ErrorResponse(
             ex.getMessage(),
             "La pregunta solicitada no existe en el sistema",
             HttpStatus.NOT_FOUND.value(),
             request.getRequestURI()
         );
-        
+
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 

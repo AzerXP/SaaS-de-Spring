@@ -1,9 +1,8 @@
-package com.saas.spring.lesson;
+package com.saas.spring.course;
 
 import java.util.List;
 
-import com.saas.spring.course.Course;
-import com.saas.spring.question.Question;
+import com.saas.spring.lesson.Lesson;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -12,8 +11,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
@@ -28,25 +25,21 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "lessons")
-public class Lesson {
+@Table(name = "courses")
+public class Course {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "El título de la lección no puede ser nulo o vacío")
+    @NotBlank(message = "El título del curso no puede ser nulo o vacío")
     @Column(nullable = false)
     private String title;
 
-    @Size(max = 500, message = "La descripción no puede superar los 500 caracteres")
-    @Column(length = 500)
+    @Size(max = 1000, message = "La descripción no puede superar los 1000 caracteres")
+    @Column(length = 1000)
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "course_id")
-    private Course course;
-
-    @OneToMany(mappedBy = "lesson", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Question> questions;
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Lesson> lessons;
 }
