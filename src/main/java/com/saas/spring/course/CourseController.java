@@ -2,6 +2,10 @@ package com.saas.spring.course;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.saas.spring.course.dto.CourseInDto;
@@ -17,6 +22,7 @@ import com.saas.spring.course.dto.CourseOutDto;
 import com.saas.spring.course.dto.CourseUpdateDto;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -40,6 +46,37 @@ public class CourseController {
     }
 
     @GetMapping
+    @Operation(summary = "Get courses paginated", description = "Obtiene todos los cursos paginados")
+    public ResponseEntity<Page<CourseOutDto>> getCoursesPaginated(
+            @RequestParam(defaultValue = "0") 
+            @Parameter(description = "Número de página", example = "0")
+            int page,
+            
+            @RequestParam(defaultValue = "10") 
+            @Parameter(description = "Tamaño de página", example = "10")
+            int size,
+            
+            @RequestParam(defaultValue = "id") 
+            @Parameter(description = "Campo por el que ordenar", example = "id")
+            String sortBy,
+            
+            @RequestParam(defaultValue = "asc") 
+            @Parameter(description = "Dirección de ordenamiento (asc o desc)", example = "asc")
+            String sortDirection) {
+            
+        log.info("Obteniendo cursos paginados - página: {}, tamaño: {}", page, size);
+            
+        Sort sort = sortDirection.equalsIgnoreCase("desc") 
+                ? Sort.by(sortBy).descending() 
+                : Sort.by(sortBy).ascending();
+            
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<CourseOutDto> courses = courseService.getAllCoursesPaginated(pageable);
+            
+        return ResponseEntity.ok(courses);
+    }
+
+    @GetMapping("/all")
     @Operation(summary = "Get all courses", description = "Obtiene todos los cursos disponibles en el sistema")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Cursos obtenidos exitosamente",

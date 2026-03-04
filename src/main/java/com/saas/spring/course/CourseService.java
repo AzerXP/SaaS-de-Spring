@@ -2,6 +2,8 @@ package com.saas.spring.course;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,18 +21,22 @@ public class CourseService {
 
     private final CourseRepository courseRepository;
 
-    @Transactional(readOnly = true)
+    public Page<CourseOutDto> getAllCoursesPaginated(Pageable pageable) {
+        log.debug("Obteniendo cursos paginados");
+        return courseRepository.findAllWithLessonsPaginated(pageable)
+                .map(this::convertToOutDto);
+    }
+
     public List<CourseOutDto> getAllCourses() {
         log.debug("Obteniendo todos los cursos");
-        return courseRepository.findAll().stream()
+        return courseRepository.findAllWithLessons().stream()
                 .map(this::convertToOutDto)
                 .toList();
     }
 
-    @Transactional(readOnly = true)
     public CourseOutDto getById(Long id) {
         log.debug("Obteniendo curso con id: {}", id);
-        Course course = courseRepository.findById(id)
+        Course course = courseRepository.findByIdWithLessons(id)
                 .orElseThrow(() -> new IllegalArgumentException("Curso no encontrado con id: " + id));
         return convertToOutDto(course);
     }
