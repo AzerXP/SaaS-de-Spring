@@ -1,6 +1,7 @@
 package com.saas.spring.User;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
@@ -20,11 +21,11 @@ public class UserService {
         this.roleRepository = roleRepository;
     }
 
-    private User toEntity(UserInDto userInDto, List<Role> roles){
+    private User toEntity(UserInDto userInDto, Set<Role> roles){
         return User.builder()
             .nombre(userInDto.nombre())
             .password(userInDto.password())
-            .role(roles).build();
+            .roles(roles).build();
     }
 
     public User createUser(UserInDto userInDto){
@@ -33,7 +34,7 @@ public class UserService {
             throw new IllegalArgumentException("Error en el dto no puede ser nulo o vacio el idRole, nombre , passowrd");
         }
 
-        List<Role> roles = roleRepository.findAllById(userInDto.IdRoles());
+        Set<Role> roles = roleRepository.findAllByIdSet(userInDto.IdRoles());
 
         if (roles.isEmpty()) {
             throw new IllegalArgumentException("Error la lista esta vacio");

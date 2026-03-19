@@ -7,7 +7,7 @@ public class UserExceptions {
 
     public static class UserNotFoundException extends RuntimeException {
         public UserNotFoundException(Long id){
-            super("Rol no encontrado con id : "+id);
+            super("Usuario no encontrado con id : "+id);
         }
 
     }
